@@ -1,0 +1,4 @@
+.venv
+Data_generation/data/mock_csvs/*.csv
+Data_generation/data/mock_csvs_1/*.csv
+Data_generation/data/mock_csvs_1/*.csv
