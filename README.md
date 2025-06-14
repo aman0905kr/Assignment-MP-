@@ -21,8 +21,7 @@ This project provides a Python-based ETL (Extract, Transform, Load) pipeline to 
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone <repository_url>
-   cd <repository_folder>
+   git clone https://github.com/aman0905kr/Assignment-MP-/blob/main/README.md
 
 2. Create and activate a virtual environment
 
@@ -32,7 +31,11 @@ This project provides a Python-based ETL (Extract, Transform, Load) pipeline to 
 4. Data Generation (if needed):
     Use : Data_generation/data_generation.ipynb to generate data
 
-5. 
+5. Cleaning data and running transformations:
+    Code script notebook ran on sample data -->    utils/transformations.ipynb
+    
+6.  Python scripts:
+    
     For transformation/aggregation logic check through pandas:
     output/main.py
 
@@ -43,3 +46,4 @@ This project provides a Python-based ETL (Extract, Transform, Load) pipeline to 
 
     Note: The output for the above files is the Final answer : total_time_per_user
 
+7. profile_outputs --> contains generated output files through line-profiler
