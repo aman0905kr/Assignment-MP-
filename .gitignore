@@ -1,4 +1,30 @@
-.venv
+# macOS system file
+.DS_Store
+
+# Virtual environments
+.venv/
+
+# Ignore mock CSVs
 Data_generation/data/mock_csvs/*.csv
 Data_generation/data/mock_csvs_1/*.csv
-Data_generation/data/mock_csvs_1/*.csv
+Data_generation/data/mock_csvs_final
+
+# Ignore entire mock folders if needed
+Data_generation/data/mock_csvs/
+Data_generation/data/mock_csvs_1/
+
+# Output and profiling
+output/*.parquet
+output/result.parquet_zstd
+output/result.parquet_zstd_1
+
+# Parquet and log files
+*.parquet
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# VS Code project settings
+.vscode/

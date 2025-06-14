@@ -1,0 +1,24 @@
+Timer unit: 1e-09 s
+
+Total time: 40.5765 s
+File: /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main.py
+Function: final_aggregate at line 31
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    31                                           @Lprofile
+    32                                           def final_aggregate():
+    33                                           
+    34         1    1004000.0    1e+06      0.0      final_aggregate_df = pd.DataFrame()
+    35                                           
+    36       100      51000.0    510.0      0.0      for i in range(1,100):
+    37        99        4e+10    4e+08     97.1          df = dedupe_and_enrich(f"/Users/aman/Desktop/VS Code/DE Assignment (IC)/Data_generation/data/mock_csvs/user_activity_{i}.csv")
+    38        99 1098129000.0    1e+07      2.7          final_aggregate_df = pd.concat([final_aggregate_df, df], ignore_index=True)
+    39         3   68491000.0    2e+07      0.2      final_aggregate_df = (final_aggregate_df
+    40         2       1000.0    500.0      0.0      .groupby("user_id", as_index=False)["total_watch_time"]
+    41                                               .sum()
+    42                                               )
+    43                                               
+    44         1          0.0      0.0      0.0      return final_aggregate_df
+
+ 40.58 seconds - /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main.py:31 - final_aggregate

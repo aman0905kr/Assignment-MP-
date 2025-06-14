@@ -1,0 +1,35 @@
+Timer unit: 1e-09 s
+
+Total time: 9.68369 s
+File: /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_polar.py
+Function: final_aggregate at line 34
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    34                                           @Lprofile
+    35                                           # @profile
+    36                                           def final_aggregate() -> pl.DataFrame:
+    37                                               """
+    38                                               Reads all user_activity files, transforms them, and computes a global per-user total.
+    39                                               """
+    40         1       1000.0   1000.0      0.0      dfs = []
+    41       100      74000.0    740.0      0.0      for i in range(1, 100):
+    42        99     201000.0   2030.3      0.0          file_path = f"/Users/aman/Desktop/VS Code/DE Assignment (IC)/Data_generation/data/mock_csvs/user_activity_{i}.csv"
+    43        99 9633962000.0    1e+08     99.5          dfs.append(dedupe_and_enrich(file_path))
+    44                                           
+    45                                               # Concatenate per-file results
+    46         1     311000.0 311000.0      0.0      all_df = pl.concat(dfs)
+    47                                           
+    48                                               # Final aggregation across all files
+    49         1       1000.0   1000.0      0.0      final_df = (
+    50         3   32681000.0    1e+07      0.3          all_df
+    51         1          0.0      0.0      0.0          .group_by("user_id")
+    52                                                   .agg(
+    53         1       7000.0   7000.0      0.0              pl.col("total_watch_time").sum().alias("total_watch_time")
+    54                                                   )
+    55                                               )
+    56         1     977000.0 977000.0      0.0      final_df = final_df.sort(by=["user_id"])
+    57         1   15479000.0    2e+07      0.2      final_df.write_parquet("/Users/aman/Desktop/VS Code/DE Assignment (IC)/output/result.parquet")
+    58         1          0.0      0.0      0.0      return final_df
+
+  9.68 seconds - /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_polar.py:34 - final_aggregate

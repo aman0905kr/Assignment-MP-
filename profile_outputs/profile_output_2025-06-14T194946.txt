@@ -1,0 +1,75 @@
+Timer unit: 1e-09 s
+
+Total time: 2.74147 s
+File: /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_polar_MP.py
+Function: final_aggregate at line 37
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    37                                           @Lprofile
+    38                                           def final_aggregate() -> pl.DataFrame:
+    39                                               """
+    40                                               Parallelized over file‐level tasks using multiprocessing.Process + Queue.
+    41                                               """
+    42                                               # 1️⃣ build your list of file paths
+    43         2      15000.0   7500.0      0.0      file_paths = [
+    44                                                   f"/Users/aman/Desktop/VS Code/DE Assignment (IC)/Data_generation/data/mock_csvs/user_activity_{i}.csv"
+    45         1       1000.0   1000.0      0.0          for i in range(1, 100)
+    46                                               ]
+    47                                           
+    48                                               # 2️⃣ decide how many workers you want
+    49                                               # num_workers = min(cpu_count(), 8)
+    50                                               # num_workers = 4
+    51         1          0.0      0.0      0.0      num_workers = 2
+    52                                           
+    53                                               # 3️⃣ create the task/result queues
+    54         1    4233000.0    4e+06      0.2      task_q   = Queue()
+    55         1     108000.0 108000.0      0.0      result_q = Queue()
+    56                                           
+    57                                               # 4️⃣ spawn the worker processes
+    58         2      86000.0  43000.0      0.0      workers = [
+    59                                                   Process(target=worker, args=(task_q, result_q))
+    60         1       1000.0   1000.0      0.0          for _ in range(num_workers)
+    61                                               ]
+    62         3       6000.0   2000.0      0.0      for w in workers:
+    63         2    2338000.0    1e+06      0.1          w.start()
+    64                                           
+    65                                               # 5️⃣ enqueue all your file paths, then send one None per worker as sentinel
+    66       100      15000.0    150.0      0.0      for fp in file_paths:
+    67        99     880000.0   8888.9      0.0          task_q.put(fp)
+    68         3       1000.0    333.3      0.0      for _ in workers:
+    69         2       2000.0   1000.0      0.0          task_q.put(None)
+    70                                           
+    71                                               # 6️⃣ collect back the results
+    72         1          0.0      0.0      0.0      dfs = []
+    73         1          0.0      0.0      0.0      finished = 0
+    74       102      42000.0    411.8      0.0      while finished < num_workers:
+    75       101 2662642000.0    3e+07     97.1          res = result_q.get()
+    76       101      93000.0    920.8      0.0          if res is None:
+    77                                                       # a worker has exited
+    78         2          0.0      0.0      0.0              finished += 1
+    79        99     120000.0   1212.1      0.0          elif isinstance(res, Exception):
+    80                                                       # handle or log errors
+    81                                                       print("Worker error:", res)
+    82                                                   else:
+    83        99     115000.0   1161.6      0.0              dfs.append(res)
+    84                                           
+    85                                               # 7️⃣ clean up
+    86         3       3000.0   1000.0      0.0      for w in workers:
+    87         2   36586000.0    2e+07      1.3          w.join()
+    88                                           
+    89                                               # 8️⃣ same post‐processing as before
+    90         1     781000.0 781000.0      0.0      all_df = pl.concat(dfs)
+    91         1          0.0      0.0      0.0      final_df = (
+    92         4   29333000.0    7e+06      1.1          all_df
+    93         1          0.0      0.0      0.0          .group_by("user_id")
+    94         1      62000.0  62000.0      0.0          .agg(pl.col("total_watch_time").sum().alias("total_watch_time"))
+    95         1          0.0      0.0      0.0          .sort("user_id")
+    96                                               )
+    97         2    4011000.0    2e+06      0.1      final_df.write_parquet(
+    98         1          0.0      0.0      0.0          "/Users/aman/Desktop/VS Code/DE Assignment (IC)/output/result.parquet_zstd_1",
+    99         1          0.0      0.0      0.0          compression="zstd"
+   100                                               )
+   101         1          0.0      0.0      0.0      return final_df
+
+  2.74 seconds - /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_polar_MP.py:37 - final_aggregate

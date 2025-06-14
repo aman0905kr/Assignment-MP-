@@ -1,0 +1,25 @@
+Timer unit: 1e-09 s
+
+Total time: 0.771506 s
+File: /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_final_aggregations.py
+Function: final_aggregations at line 7
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     7                                           @Lprofile
+     8                                           def final_aggregations():
+     9         1          0.0      0.0      0.0      input_parquet = "Data_generation/data/user_activity_combined.parquet"
+    10                                           
+    11         1      87000.0  87000.0      0.0      with pl.Config():
+    12                                                   # 2. lazy aggregation
+    13         1          0.0      0.0      0.0          agg = (
+    14         3     603000.0 201000.0      0.1              pl.scan_parquet(input_parquet, parallel="row_groups")
+    15         1          0.0      0.0      0.0              .group_by("user_id")                            
+    16                                                       .agg(
+    17         1      15000.0  15000.0      0.0                  pl.col("watch_time(min)").sum().alias("watch_time(min)")
+    18                                                       )
+    19                                                   )
+    20                                           
+    21         1  770801000.0    8e+08     99.9          return agg.collect()
+
+  0.77 seconds - /Users/aman/Desktop/VS Code/DE Assignment (IC)/output/main_final_aggregations.py:7 - final_aggregations
